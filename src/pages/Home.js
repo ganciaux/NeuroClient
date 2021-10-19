@@ -1,15 +1,8 @@
-import { makeStyles } from '@mui/styles'
-import React from 'react'
+import * as React from 'react';
+import Layout from '../components/Layout';
 
-const useStyles = makeStyles((theme) => ({
-  container: {
-    paddingTop: theme.spacing(10),
-  },
-}))
-
-const Home = () => {
-  const classes = useStyles()
-  return <div className={classes.container}>Home</div>
+export default function Clients() {
+  return (
+      <Layout title={"Home"}><div>Home page...</div></Layout>
+  );
 }
-
-export default Home

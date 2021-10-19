@@ -1,43 +1,28 @@
 import React from 'react'
 import {
-  BrowserRouter as Router,
   Redirect,
   Route,
   Switch,
 } from 'react-router-dom'
-import Grid from '@mui/material/Grid'
 import PageNotFound from '../pages/PageNotFound'
 import Home from '../pages/Home'
-import Navbar from './Navbar'
-import Sidebar from './Sidebar'
-import { makeStyles } from '@mui/styles'
-
-const useStyles = makeStyles((theme) => ({
-  container: {
-    paddingTop: theme.spacing(8),
-  },
-}))
+import Clients from '../pages/Clients'
+import Payments from '../pages/Payments'
+import Bills from '../pages/Bills'
+import Sessions from '../pages/Sessions'
 
 const Routes = () => {
-  const classes = useStyles()
   return (
-    <>
-      <Navbar></Navbar>
-      <Grid container>
-        <Grid item sm={2} xs={2}>
-          <Sidebar />
-        </Grid>
-        <Grid item sm={10} xs={10}>
-          <Router>
-            <Switch>
-              <Route path="/" exact component={Home}></Route>
-              <Route component={PageNotFound}></Route>
-              <Redirect to="/"></Redirect>
-            </Switch>
-          </Router>
-        </Grid>
-      </Grid>
-    </>
+    <Switch>
+      <Route path="/" exact component={Home}></Route>
+      <Route path="/home" exact component={Home}></Route>
+      <Route path="/clients" exact component={Clients}></Route>
+      <Route path="/paiements" exact component={Payments}></Route>
+      <Route path="/factures" exact component={Bills}></Route>
+      <Route path="/rendez-vous" exact component={Sessions}></Route>
+      <Route component={PageNotFound}></Route>
+      <Redirect to="/"></Redirect>
+    </Switch>
   )
 }
 

@@ -1,16 +1,8 @@
-import { makeStyles } from '@mui/styles'
-import ClientCard from '../components/ClientCard'
-import { Container } from '@mui/material'
+import * as React from 'react';
+import Layout from '../components/Layout';
 
-const useStyles = makeStyles((theme) => ({
-  container: {
-    paddingTop: theme.spacing(10),
-  },
-}))
-
-const Clients = () => {
-  const classes = useStyles()
-  return <Container className={classes.container}>client list</Container>
+export default function Clients() {
+  return (
+      <Layout title={"Liste des clients"}><div>Formulaire de recherche client</div></Layout>
+  );
 }
-
-export default Clients

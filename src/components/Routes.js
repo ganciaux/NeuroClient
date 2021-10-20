@@ -1,9 +1,5 @@
 import React from 'react'
-import {
-  Redirect,
-  Route,
-  Switch,
-} from 'react-router-dom'
+import { Redirect, Route, Switch } from 'react-router-dom'
 import PageNotFound from '../pages/PageNotFound'
 import Home from '../pages/Home'
 import Clients from '../pages/Clients'
@@ -16,7 +12,7 @@ const Routes = () => {
     <Switch>
       <Route path="/" exact component={Home}></Route>
       <Route path="/home" exact component={Home}></Route>
-      <Route path="/clients" exact component={Clients}></Route>
+      <Route path="/patients" exact component={Clients}></Route>
       <Route path="/paiements" exact component={Payments}></Route>
       <Route path="/factures" exact component={Bills}></Route>
       <Route path="/rendez-vous" exact component={Sessions}></Route>

@@ -13,13 +13,13 @@ const queryClient = new QueryClient()
 ReactDOM.render(
   <QueryClientProvider client={queryClient}>
     <StyledEngineProvider injectFirst>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Router>
-        <App />
-      </Router>
-    </ThemeProvider>
-    <ReactQueryDevtools />
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Router>
+          <App />
+        </Router>
+      </ThemeProvider>
+      <ReactQueryDevtools />
     </StyledEngineProvider>
   </QueryClientProvider>,
   document.getElementById('root'),

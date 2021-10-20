@@ -18,8 +18,8 @@ const ClientList = () => {
 
   return (
     <div>
-      {data.map((client) => {
-        return <div>{client._id}</div>
+      {data?.map((client) => {
+        return <div>{client.name}</div>
       })}
     </div>
   )

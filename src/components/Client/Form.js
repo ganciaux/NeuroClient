@@ -1,74 +1,100 @@
-import React, { useState, useEffect } from 'react'
-import { useForm, Controller } from 'react-hook-form'
-import Grid from '@mui/material/Grid'
-import Input from '@mui/material/Input'
-import RadioGroup from '@mui/material/RadioGroup'
-import TextField from '@mui/material/TextField'
-import MenuItem from '@mui/material/MenuItem'
+import React, { useState } from 'react'
 import Button from '@mui/material/Button'
-import { yupResolver } from '@hookform/resolvers/yup'
-import * as yup from 'yup'
+import Grid from '@mui/material/Grid'
+import TextField from '@mui/material/TextField'
+import frLocale from 'date-fns/locale/fr'
+import AdapterDateFns from '@mui/lab/AdapterDateFns'
+import DatePicker from '@mui/lab/DatePicker'
+import LocalizationProvider from '@mui/lab/LocalizationProvider'
 
-const schema = yup.object({
-  username: yup.string().required(),
-  email: yup.string().email().required(),
-})
-
-const wait = function (duration = 1000) {
-  return new Promise((resolve) => {
-    window.setTimeout(resolve, duration)
-  })
-}
-
-function Form() {
-  const { register, handleSubmit, formState, setError, control } = useForm({
-    mode: 'onTouched',
-    resolver: yupResolver(schema),
-  })
-  const { isSubmitting, isSubmitted, isSubmitSuccessful, errors } = formState
-  const onSubmit = async (data) => {
-    await wait(2000)
-    console.log(data)
-    /*setError('username', {
-      type: 'manual',
-      message: "erreur serveur"
-    })*/
+export default function ClientForm({ client }) {
+  const [date, setDate] = useState(client.birthdate)
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    console.log('submit')
   }
-
-  if (isSubmitSuccessful) {
-    console.log('redirect')
-  }
-
-  console.log(errors)
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Grid
-        container
-        spacing={1}
-        sx={{ border: '1px solid black', borderRadius: '5px' }}
-      >
-        <Grid item xs={12}>
-          {isSubmitSuccessful && (
-            <div className="alert alert-success">Merci pour l'inscription</div>
-          )}
+    <form onSubmit={handleSubmit}>
+      <Grid container spacing={3}>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            id="standard-basic"
+            label="Nom"
+            variant="standard"
+            defaultValue={client.name}
+            sx={{ width: '95%' }}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            id="standard-basic"
+            label="Prénom"
+            variant="standard"
+            defaultValue={client.firstname}
+            sx={{ width: '95%' }}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            id="standard-basic"
+            label="Téléphone"
+            variant="standard"
+            defaultValue={client.phone}
+            sx={{ width: '95%' }}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            id="standard-basic"
+            label="Email"
+            variant="standard"
+            defaultValue={client.email}
+            sx={{ width: '95%' }}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            id="standard-basic"
+            label="Adresse"
+            variant="standard"
+            defaultValue={client.address}
+            sx={{ width: '95%' }}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            id="standard-basic"
+            label="Ville"
+            variant="standard"
+            defaultValue={client.city}
+            sx={{ width: '95%' }}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            id="standard-basic"
+            label="Code postal"
+            variant="standard"
+            defaultValue={client.zip}
+            sx={{ width: '95%' }}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <LocalizationProvider dateAdapter={AdapterDateFns} locale={frLocale}>
+            <DatePicker
+              label="Date de naissance"
+              value={date}
+              onChange={(newValue) => setDate(newValue)}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </LocalizationProvider>
         </Grid>
         <Grid item xs={6}>
-          <input name="username" {...register('username')} />
-          {errors.username && <span>{errors.username.message}</span>}
-        </Grid>
-        <Grid item xs={6}>
-          <input name="email" {...register('email')} />
-          {formState.errors.email && <span>{errors.email.message}</span>}
-        </Grid>
-        <Grid item xs={12}>
-          <button disabled={isSubmitting} type="submit">
-            S'inscrire
-          </button>
+          <Button type="submit" variant="contained">
+            Modifier
+          </Button>
         </Grid>
       </Grid>
     </form>
   )
 }
-
-export default Form

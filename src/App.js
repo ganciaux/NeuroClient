@@ -82,8 +82,9 @@ export default function App() {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
+            onClick={() => setIsOpen(!isOpen)}
           >
-            <MenuIcon onClick={() => setIsOpen(!isOpen)} />
+            <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" noWrap sx={{ flexGrow: 1 }}>
             Neuro

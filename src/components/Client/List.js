@@ -1,6 +1,8 @@
 import { useQuery } from 'react-query'
-import * as api from '../../api/client'
 import Loader from 'react-loader-spinner'
+import Grid from '@mui/material/Grid'
+import * as api from '../../api/client'
+import ClientCard from './Card'
 
 const ClientList = () => {
   const { data, error, isLoading, isError } = useQuery(
@@ -17,11 +19,11 @@ const ClientList = () => {
   }
 
   return (
-    <div>
+    <Grid container spacing={2}>
       {data?.map((client) => {
-        return <div>{client.name}</div>
+        return <ClientCard client={client}> </ClientCard>
       })}
-    </div>
+    </Grid>
   )
 }
 

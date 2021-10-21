@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useQuery } from 'react-query'
 import Loader from 'react-loader-spinner'
 import Grid from '@mui/material/Grid'
+import Alert from '@mui/material/Alert'
 import Box from '@mui/material/Box'
 import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
@@ -27,11 +28,11 @@ const Client = (props) => {
   }
 
   if (isLoading) {
-    return <Loader type="ThreeDots" color="#ccc" height={30} />
+    return <Loader type="ThreeDots" color="#ccc" height={18} />
   }
 
   if (isError) {
-    return <span>ERROR: {error.message}</span>
+    return <Alert severity="error">Impossible de charger le patient — {error.message}</Alert>
   }
 
   return (

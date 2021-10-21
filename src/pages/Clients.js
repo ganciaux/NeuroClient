@@ -6,7 +6,7 @@ import ClientList from '../components/Client/List'
 export default function Clients() {
   return (
     <Layout title={'Liste des patients'}>
-      <ClientList></ClientList>
+      <ClientList/>
     </Layout>
   )
 }

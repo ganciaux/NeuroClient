@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { Typography } from '@mui/material'
 import Box from '@mui/material/Box'
-import Grid from '@mui/material/Grid'
 
 export default function Layout({ title, children }) {
   return (

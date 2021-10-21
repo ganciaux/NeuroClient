@@ -21,7 +21,7 @@ const ClientList = () => {
   return (
     <Grid container spacing={2}>
       {data?.map((client) => {
-        return <ClientCard client={client}> </ClientCard>
+        return <ClientCard key={client._id} client={client}> </ClientCard>
       })}
     </Grid>
   )

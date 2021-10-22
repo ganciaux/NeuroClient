@@ -28,7 +28,7 @@ function Form() {
   const { isSubmitting, isSubmitted, isSubmitSuccessful, errors } = formState
   const onSubmit = async (data) => {
     await wait(2000)
-    console.log(data)
+    console.log('_form:', data)
     /*setError('username', {
       type: 'manual',
       message: "erreur serveur"

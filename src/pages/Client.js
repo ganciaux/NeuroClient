@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useQuery } from 'react-query'
+import { useQuery, useQueryClient } from 'react-query'
 import Loader from 'react-loader-spinner'
 import Grid from '@mui/material/Grid'
 import Alert from '@mui/material/Alert'
@@ -9,6 +9,7 @@ import Tab from '@mui/material/Tab'
 import * as api from '../api/client'
 import Layout from '../components/Layout'
 import ClientForm from '../components/Client/Form'
+import ClientSessions from '../components/Client/Sessions'
 
 const Client = (props) => {
   const clientId = props.match.params.id
@@ -32,7 +33,11 @@ const Client = (props) => {
   }
 
   if (isError) {
-    return <Alert severity="error">Impossible de charger le patient — {error.message}</Alert>
+    return (
+      <Alert severity="error">
+        Impossible de charger le patient — {error.message}
+      </Alert>
+    )
   }
 
   return (
@@ -54,18 +59,11 @@ const Client = (props) => {
       </Box>
       <Box
         sx={{
-          boxShadow: 2,
-          border: '1px solid lightgrey',
-          borderRadius: '5px',
           padding: '15px',
         }}
       >
-        {value === 0 && <ClientForm client={client} />}
-        {value === 1 && (
-          <Grid item xs={12}>
-            Rendez vous...
-          </Grid>
-        )}
+        {value === 0 && <ClientForm client={client} clientId={clientId} />}
+        {value === 1 && <ClientSessions />}
         {value === 2 && (
           <Grid item xs={12}>
             Paiments...

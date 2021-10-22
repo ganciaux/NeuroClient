@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
+import { useQuery, useMutation, QueryClient, useQueryClient } from 'react-query'
+import ClearIcon from '@mui/icons-material/Clear'
 import Alert from '@mui/material/Alert'
 import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid'
@@ -10,9 +12,12 @@ import DatePicker from '@mui/lab/DatePicker'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import * as api from '../../api/client'
+import { IconButton } from '@mui/material'
 
 const schema = yup.object({
-
+  name: yup.string().required('Obligatoire'),
+  firstname: yup.string().required(),
 })
 
 const wait = function (duration = 1000) {
@@ -21,24 +26,31 @@ const wait = function (duration = 1000) {
   })
 }
 
-export default function ClientForm({ client }) {
+export default function ClientForm({ client, clientId }) {
   const [date, setDate] = useState(client.birthdate)
-  const { handleSubmit, register, formState } = useForm({
+  const [isOpen, setIsOpen] = useState(false)
+  const { handleSubmit, register, formState, control } = useForm({
     mode: 'onTouched',
     resolver: yupResolver(schema),
   })
   const { isSubmitting, isSubmitSuccessful, errors } = formState
   const onSubmit = async (data) => {
-    console.log("onSubmit:", data)
-    console.log("onSubmit:", date)
-    /*setError('username', {
-      type: 'manual',
-      message: "erreur serveur"
-    })*/
-
+    setIsOpen(false)
+    const updateClient = { ...data, birthdate: date, id: client._id }
+    console.log('onsubmit:', date, updateClient.birthdate)
+    mutate(updateClient)
   }
-
-  console.log("ClientForm:", date)
+  const queryClient = useQueryClient()
+  const { isLoading, mutate, error, isError } = useMutation(api.updateClient, {
+    onSuccess: (data) => {
+      queryClient.setQueryData([['clients', clientId], data])
+      setIsOpen(true)
+    },
+    onError: (err) => {
+      console.log('onError:', err)
+      setIsOpen(true)
+    },
+  })
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -116,25 +128,62 @@ export default function ClientForm({ client }) {
         </Grid>
         <Grid item xs={12} sm={6}>
           <LocalizationProvider dateAdapter={AdapterDateFns} locale={frLocale}>
+            {/*
+                      <Controller
+              control={control}
+              render={({
+                field: {
+                  onChange = (value) => {
+                    setDate(value)
+                  },
+                  value,
+                },
+              }) => (
+                <DatePicker
+                  label="Date de naissance"
+                  value={value}
+                  onChange={onChange}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              )}
+              defaultValue={client.birthdate}
+              name="birthdate"
+              />*/}
             <DatePicker
               label="Date de naissance"
               value={date}
-              onChange={(newValue) => setDate(newValue)}
-              renderInput={(params) => <TextField {...params}/> }
-              
+              clearable
+              disableFuture
+              onChange={(value) => setDate(value)}
+              renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>
         </Grid>
         <Grid item xs={12}>
-          <Button disabled={isSubmitting} type="submit" variant="contained">
+          <Button
+            disabled={isLoading || isSubmitting}
+            type="submit"
+            variant="contained"
+          >
             Modifier
           </Button>
         </Grid>
-        {isSubmitSuccessful && (
-            <Grid item xs={12}>
-              <Alert severity="success">Patient mis à jour avec succès!</Alert>
-            </Grid>
-          )}
+        {isSubmitSuccessful && isOpen && (
+          <Grid item xs={12}>
+            <Alert
+              severity={isError ? 'error' : 'success'}
+              action={
+                <IconButton size="small" onClick={() => setIsOpen(false)}>
+                  <ClearIcon fontSize="small" />
+                </IconButton>
+              }
+            >
+              {isError
+                ? 'Impossible de mettre à jour le patient'
+                : 'Patient mis à jour avec succès!'}
+            </Alert>
+          </Grid>
+        )}
       </Grid>
     </form>
   )

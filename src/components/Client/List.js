@@ -1,16 +1,28 @@
+import React, { useState } from 'react'
 import { useQuery } from 'react-query'
 import Loader from 'react-loader-spinner'
 import Grid from '@mui/material/Grid'
-import * as api from '../../api/client'
+//import * as api from '../../api/client'
 import ClientCard from './Card'
 import { Button } from '@mui/material'
+import axios from 'axios'
+
+export const api = axios.create({
+  baseURL: `http://localhost:5000/api`,
+})
 
 const ClientList = () => {
+  const [enabled, setEnable] = useState(false);
+
   const { data, error, isLoading, isError } = useQuery(
     'clients',
-    api.getClients,
+    () =>
+      api.get(`/clients/`).then((res) => res.data.data).finally(() => setEnable(false)),
+      {enabled: enabled}
   )
 
+  console.log(enabled)
+  /*
   const {
     status,
     data: result,
@@ -25,7 +37,7 @@ const ClientList = () => {
   const search = () => {
     refetch({ mode: 'last' })
   }
-
+  */
   if (isLoading) {
     return <Loader type="ThreeDots" color="#ccc" height={30} />
   }
@@ -36,7 +48,7 @@ const ClientList = () => {
 
   return (
     <Grid container spacing={2}>
-      <Button onClick={search}>Search</Button>
+      <Button disabled={enabled} onClick={() => setEnable(true)}>Search</Button>
       {data?.map((client) => {
         return (
           <ClientCard key={client._id} client={client}>
